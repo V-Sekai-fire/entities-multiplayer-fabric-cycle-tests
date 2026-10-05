@@ -1,38 +1,19 @@
-# multiplayer-fabric-cycle-tests
+# entities-multiplayer-fabric-cycle-tests
 
-Smoke tests for the Maglev cycles defined in
-[`multiplayer-fabric-manuals/decisions/`][adrs]. Each test is a minimal headless
-Godot script (`SceneTree`) that verifies one cycle's pass criteria against the
-real deployed infrastructure and exits with code 0 on PASS, non-zero on FAIL.
+Smoke-test scripts that check one fabric cycle's pass criteria end to end against live infrastructure.
 
-[adrs]: https://github.com/V-Sekai-fire/multiplayer-fabric-manuals/tree/main/decisions
+## What it is for
 
-## Layout
+Each script is a minimal scene-tree script that connects to the deployed services, checks its cycle's pass criteria, and exits zero on pass and non-zero on fail with the reason on standard error.
 
-```
-cycle-1-gateway-handshake/cycle1.gd   # WebTransport/QUIC handshake + datagram round-trip
-```
+## Run
 
-## Running a test
-
-These tests use the assembled V-Sekai engine (must include `module_http3`,
-`precision=double`). Build it once via the gitassembly recipe in
-[`multiplayer-fabric-merge`][merge], then run:
-
-```bash
-godot --headless --script cycle-1-gateway-handshake/cycle1.gd
+```sh
+godot --script <cycle>/<script>.gd
 ```
 
-Exit code 0 = pass. Exit code 1 = fail (with a `[CN FAIL]` reason on stderr).
+The engine must be a double-precision build with WebTransport support.
 
-[merge]: https://github.com/V-Sekai-fire/multiplayer-fabric-merge
+## Licence
 
-## Cycle 1 — Godot Client Gateway Handshake
-
-Connects to `gateway.chibifire.com:443` over WebTransport, sends one
-`{"action":"ping","id":...,"v":1}` datagram, expects a `{"result":"pong"}`
-reply, exits cleanly. Verifies the three Cycle 1 pass criteria:
-
-1. WebTransport/QUIC connection without TLS or handshake error
-2. One datagram received (gateway's pong reply)
-3. Client exits cleanly (no orphaned process or open port)
+The repository does not state a licence.
