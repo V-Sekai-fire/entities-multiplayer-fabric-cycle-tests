@@ -16,4 +16,4 @@ The engine must be a double-precision build with WebTransport support.
 
 ## Licence
 
-The repository does not state a licence.
+MIT. See [LICENSE](LICENSE).
